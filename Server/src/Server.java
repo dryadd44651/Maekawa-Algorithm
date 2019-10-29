@@ -13,7 +13,11 @@ public class Server {
     private ArrayList<Handler> clients = new ArrayList<>();
     private ExecutorService pool = Executors.newFixedThreadPool(500);
 	private String pathName;
-
+    Socket socket = null;
+    ServerSocket serverSocket = null;
+    Server() throws IOException {
+        serverSocket = new ServerSocket(serverPorts);
+    }
 	private void setPathName(){
         pathName = "./files"+serverID;
     }
@@ -22,10 +26,10 @@ public class Server {
     }
     private  void run() throws IOException {
 		System.out.println("Server"+serverID+" is runing...");
-        Socket socket = null;
-        try (ServerSocket ss = new ServerSocket(serverPorts);){
 
-            socket = ss.accept();
+        try {
+
+            socket = serverSocket.accept();
             Handler clientThread = new Handler(socket,serverID);
             clients.add(clientThread);
             pool.execute((clientThread));

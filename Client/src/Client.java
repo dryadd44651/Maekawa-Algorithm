@@ -35,7 +35,9 @@ public class Client {
     ListNode quorumTree = new ListNode(1);
 
     ArrayList<Integer> quorums;
-
+    void setToken(int index,boolean t){
+        token.set(index,t);
+    }
     private Message socketRead(Socket socket){
 
         Message message = new Message(0, "",0,0,"");;
@@ -247,22 +249,33 @@ public class Client {
         buildTree(2,quorumTree);
     }
     private void listening(){
+        Client client = this;
+        new Thread(){
+            public void run() {
+                Socket socket = null;
+                ServerSocket ss = null;
+                try {
+                    ss = new ServerSocket(clientPorts[clientID]);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                while (true){
+                    try{
+                    socket = ss.accept();
+                    ClientListener listener = new ClientListener(socket,client);
+                    listeners.add(listener);
+                    pool.execute((listener));
+                    }catch (SocketTimeoutException e) {
+                        System.out.println("time out");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-        Socket socket = null;
-        try (ServerSocket ss = new ServerSocket(clientPorts[clientID])){
 
-            socket = ss.accept();
-            ClientListener listener = new ClientListener(socket,this);
-            listeners.add(listener);
-            pool.execute((listener));
+            }
+        }.start();
 
-
-
-        }catch (SocketTimeoutException e) {
-            System.out.println("time out");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     public static void main(String[] args) throws IOException, InterruptedException {
         Client client = new Client();
@@ -272,6 +285,7 @@ public class Client {
         else
             client.ini("0");
 
+        client.listening();
         for(int i = 0;i<50;i++){
             System.out.println(client.clientID+" times: "+i);
             String timeStamp = client.getTimeStamp();

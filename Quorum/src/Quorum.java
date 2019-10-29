@@ -18,6 +18,9 @@ public class Quorum {
 	private String pathName;
 	private ArrayList<Message> queue = new ArrayList<>();
     boolean token = true;
+    Socket socket = null;
+    ServerSocket serverSocket = null;
+
     public boolean getToken(){
         return token;
     }
@@ -26,6 +29,42 @@ public class Quorum {
     }
     private void setID(int src){
         quorumID = src%quorumPorts.length;
+    }
+    private Message socketRead(Socket socket) throws IOException {
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Message message = new Message(0,"",0,0,"");;
+        try {
+            message =(Message) ois.readObject();
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return  message;
+    }
+    private void socketWrite(Socket socket ,Message message) throws IOException {
+        ObjectOutputStream oos;
+        oos= new ObjectOutputStream(socket.getOutputStream());
+        try {
+            oos.writeObject(message);
+            oos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    void reply(int clientID) throws IOException {
+        Socket replySocket = new Socket(clientIps[clientID], clientPorts[clientID]);
+        Message request = new Message(0, "reply", quorumID,clientID, "fileName");
+        System.out.println(clientID);
+        //set the message to request
+
+
+        //sending (success is a flag of sock etWrite result)
+        socketWrite(replySocket, request);
+        //read form client
+        Message ServerMessage = socketRead(replySocket);
+        if (ServerMessage.getContent().compareTo("replied")==0)
+            token = false;
+        System.out.println(ServerMessage.getContent());
     }
     public void addToQueue(Message src) {
         this.queue.add(src);
@@ -64,10 +103,9 @@ public class Quorum {
     }
     private  void run() throws IOException {
 		System.out.println("Quorum"+quorumID+" is runing...");
-        Socket socket = null;
-        try (ServerSocket ss = new ServerSocket(quorumPorts[quorumID]);){
 
-            socket = ss.accept();
+        try {
+            socket = serverSocket.accept();
             Handler clientThread = new Handler(socket,this);
             clients.add(clientThread);
             pool.execute((clientThread));
@@ -82,6 +120,32 @@ public class Quorum {
             //socket close in handler
         }
     }
+    private void release(){
+        new Thread(){
+            @Override
+            public void run() {
+                while (true){
+                    if (token == true && queue.size()>0){
+                        int dst = firstList();
+                        try {
+                            System.out.println(dst);
+                            reply(dst);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }.start();
+
+    }
     private  void ini(int id){
         setID(id);
         try {
@@ -91,7 +155,7 @@ public class Quorum {
             for (int i = 0;i<clientIps.length;i++){
                 clientIps[i] = p.getProperty("client"+i);
             }
-
+            serverSocket = new ServerSocket(quorumPorts[quorumID]);
         } catch (IOException e) {
             System.out.println("no ip.ini file");
         }
@@ -103,8 +167,8 @@ public class Quorum {
             quorum.ini(Integer.valueOf(args[0]));
         else
             quorum.ini(0);
-		
 
+        quorum.release();
         while (true){
             quorum.run();
         }

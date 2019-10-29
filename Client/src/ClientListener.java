@@ -47,6 +47,7 @@ public class ClientListener implements Runnable {
         ServerMessage = getReturnMessage(ClientMessage);
         switch (ClientMessage.getType()){
             case "reply":
+                client.setToken(ClientMessage.getFrom(),true);
                 ServerMessage.setContent("replied");
                 System.out.println("replied");
                 break;
