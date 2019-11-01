@@ -10,9 +10,10 @@ import java.util.concurrent.Executors;
 public class Server {
     int serverID = 0;
     int serverPorts = 30500;
-    private ArrayList<Handler> clients = new ArrayList<>();
+    private ArrayList<ServerListener> clients = new ArrayList<>();
     private ExecutorService pool = Executors.newFixedThreadPool(500);
 	private String pathName;
+	int totalMessage = 0;
     Socket socket = null;
     ServerSocket serverSocket = null;
     Server() throws IOException {
@@ -30,7 +31,7 @@ public class Server {
         try {
 
             socket = serverSocket.accept();
-            Handler clientThread = new Handler(socket,serverID);
+            ServerListener clientThread = new ServerListener(socket,serverID,this);
             clients.add(clientThread);
             pool.execute((clientThread));
 

@@ -23,7 +23,7 @@ public class Client {
     String[] quorumIps = new String[] { "dc01.utdallas.edu", "dc02.utdallas.edu", "dc03.utdallas.edu" , "dc04.utdallas.edu", "dc05.utdallas.edu", "dc06.utdallas.edu", "dc07.utdallas.edu"};
     int[] quorumPorts = new int[] { 30501, 30502, 30503, 30504, 30505, 30506, 30507 };
     int[] clientPorts = new int[] { 30000, 30001, 30002, 30003, 30004 };
-
+    int msgCounter = 0;
     int clientID;
     String serverIps = "dc07.utdallas.edu";
     int serverPort = 30500;
@@ -35,6 +35,8 @@ public class Client {
     ListNode quorumTree = new ListNode(1);
 
     ArrayList<Integer> quorums;
+    void setMsgCounter(int i){msgCounter = i;}
+    int getMsgCounter(){return msgCounter;}
     void setToken(int index,boolean t){
         token.set(index,t);
     }
@@ -94,7 +96,8 @@ public class Client {
         socketWrite(socket, request);
         //read form client
         Message ServerMessage = socketRead(socket);
-        System.out.println(ServerMessage.getContent());
+        System.out.println(ServerMessage.getContent()+" "+ServerMessage.getFrom());
+        msgCounter++;
         return ServerMessage.getContent();
     }
     void release(int quorumID) throws IOException {
@@ -108,10 +111,11 @@ public class Client {
         Message ServerMessage = socketRead(socket);
         switch (ServerMessage.getContent()){
             case "keep":
+                msgCounter++;
                 break;
             case "released":
                 token.set(quorumID,false);
-
+                msgCounter++;
                 break;
             default:
                 System.out.println("release error");
@@ -279,6 +283,7 @@ public class Client {
     }
     public static void main(String[] args) throws IOException, InterruptedException {
         Client client = new Client();
+        Random random = new Random();
 
         if(args.length!=0)
             client.ini(args[0]);
@@ -286,15 +291,26 @@ public class Client {
             client.ini("0");
 
         client.listening();
-        for(int i = 0;i<50;i++){
+        double time;
+
+
+        for(int i = 0;i<20;i++){
             System.out.println(client.clientID+" times: "+i);
             String timeStamp = client.getTimeStamp();
+
+            if(i == 19)
+                timeStamp += "end";
+            Thread.sleep(random.nextInt(3000)+2000);
+            client.setMsgCounter(0);
+            time = System.currentTimeMillis();
             client.broadcastRequest(timeStamp);
             client.waitToken();
+            System.out.println(String.format("The Latency: %f", (System.currentTimeMillis() -time)/1000));
             client.severWrite(timeStamp);
-            //Thread.sleep(2000);
+            //Thread.sleep(random.nextInt(2000)+1000);
             client.broadcastRelease();
-            Thread.sleep(2000);
+            client.waitRelease();
+            System.out.println("Message counter: "+client.getMsgCounter());
         }
 
     }
@@ -304,4 +320,11 @@ public class Client {
             Thread.sleep(100);
         }
     }
+    private void waitRelease() throws InterruptedException {
+        while (true){
+            if (quorums.size()==0)
+                break;
+        }
+    }
+
 }

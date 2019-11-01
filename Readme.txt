@@ -6,5 +6,12 @@ each client will enter critical section(server0) 20 times
 each times client will send the request to quorums for token
 
 without yield and fail, deadlock may happen.
-between release and request must have sleep time.
-because release may happen before request, the client would get token(request) and lose token impudently (release).
+without any waiting, the latency will be about 0.2
+with waiting, the latency will be about 4~6
+
+(before senting request)
+reduce the first waiting time, the node will broadcast the message almost at the same time.
+deadlock easily happen.
+
+(during critical section)
+reduce second waiting time, the waiting for quorum times and latency reduce significantly.

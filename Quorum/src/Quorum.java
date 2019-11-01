@@ -13,7 +13,7 @@ public class Quorum {
     int[] quorumPorts = new int[] { 30501, 30502, 30503, 30504, 30505, 30506, 30507 };
     int[] clientPorts = new int[] { 30000, 30001, 30002, 30003, 30004 };
     String[] clientIps = new String[] { "dc09.utdallas.edu", "dc10.utdallas.edu", "dc11.utdallas.edu" , "dc12.utdallas.edu", "dc13.utdallas.edu"};
-    private ArrayList<Handler> clients = new ArrayList<>();
+    private ArrayList<QuorumListener> clients = new ArrayList<>();
     private ExecutorService pool = Executors.newFixedThreadPool(500);
 	private String pathName;
 	private ArrayList<Message> queue = new ArrayList<>();
@@ -74,12 +74,12 @@ public class Quorum {
         int minIdx,qIdx = 0;
         if(this.queue.size() == 0)
             return -1;
-        min = Long.valueOf(this.queue.get(0).getContent().replaceAll("-|:| ",""));
+        min = Long.valueOf(this.queue.get(0).getContent().replaceAll("-|:| |end",""));
         minIdx = this.queue.get(0).getFrom();
         //for(Message message:this.queue){
         for(int i = 0;i<queue.size();i++){
             Message message = queue.get(i);
-            time = Long.valueOf(message.getContent().replaceAll("-|:| ",""));
+            time = Long.valueOf(message.getContent().replaceAll("-|:| |end",""));
             if(time<min){
                 min = time;
                 minIdx = message.getFrom();
@@ -106,7 +106,7 @@ public class Quorum {
 
         try {
             socket = serverSocket.accept();
-            Handler clientThread = new Handler(socket,this);
+            QuorumListener clientThread = new QuorumListener(socket,this);
             clients.add(clientThread);
             pool.execute((clientThread));
 

@@ -50,6 +50,7 @@ public class ClientListener implements Runnable {
                 client.setToken(ClientMessage.getFrom(),true);
                 ServerMessage.setContent("replied");
                 System.out.println("replied");
+                client.msgCounter++;
                 break;
             default:
                 ServerMessage.setContent("error");

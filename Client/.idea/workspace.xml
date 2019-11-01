@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e58d415d-3c4c-40e8-b7b8-32d7364c2923" name="Default Changelist" comment="" />
+    <list default="true" id="e58d415d-3c4c-40e8-b7b8-32d7364c2923" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/Client$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/Client$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/Client$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/Client$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/Client.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/Client.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/ClientListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/ClientListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Client.jar" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ClientListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Quorum/src/Handler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Quorum/src/Quorum.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../Quorum/src/Quorum.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Quorum/src/Quorum.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Quorum/src/Quorum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Readme.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/src/Handler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/src/Server.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/src/Server.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/src/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/src/files0/0.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/src/files0/0.txt" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,13 +34,18 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="1S5HGRxQhOvolUExwaxkK7QfefU" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Server" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -63,6 +87,17 @@
       <updated>1570846440269</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
