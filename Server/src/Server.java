@@ -11,7 +11,7 @@ public class Server {
     int serverID = 0;
     int serverPorts = 30500;
     private ArrayList<ServerListener> clients = new ArrayList<>();
-    private ExecutorService pool = Executors.newFixedThreadPool(500);
+    private ExecutorService pool = Executors.newCachedThreadPool();
 	private String pathName;
 	int totalMessage = 0;
     Socket socket = null;
@@ -31,9 +31,9 @@ public class Server {
         try {
 
             socket = serverSocket.accept();
-            ServerListener clientThread = new ServerListener(socket,serverID,this);
-            clients.add(clientThread);
-            pool.execute((clientThread));
+            //ServerListener clientThread = new ServerListener(socket,serverID,this);
+            //clients.add(clientThread);
+            pool.execute(new ServerListener(socket,serverID,this));
 
 
 

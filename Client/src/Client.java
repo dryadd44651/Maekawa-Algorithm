@@ -25,7 +25,7 @@ public class Client {
     int[] clientPorts = new int[] { 30000, 30001, 30002, 30003, 30004 };
     int msgCounter = 0;
     int clientID;
-    String serverIps = "dc07.utdallas.edu";
+    String serverIps = "dc08.utdallas.edu";
     int serverPort = 30500;
     private ArrayList<ClientListener> listeners = new ArrayList<>();
     private ExecutorService pool = Executors.newFixedThreadPool(500);
@@ -307,7 +307,7 @@ public class Client {
             client.waitToken();
             System.out.println(String.format("The Latency: %f", (System.currentTimeMillis() -time)/1000));
             client.severWrite(timeStamp);
-            //Thread.sleep(random.nextInt(2000)+1000);
+            Thread.sleep(random.nextInt(2000)+1000);
             client.broadcastRelease();
             client.waitRelease();
             System.out.println("Message counter: "+client.getMsgCounter());

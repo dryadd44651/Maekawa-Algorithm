@@ -13,8 +13,9 @@ public class Quorum {
     int[] quorumPorts = new int[] { 30501, 30502, 30503, 30504, 30505, 30506, 30507 };
     int[] clientPorts = new int[] { 30000, 30001, 30002, 30003, 30004 };
     String[] clientIps = new String[] { "dc09.utdallas.edu", "dc10.utdallas.edu", "dc11.utdallas.edu" , "dc12.utdallas.edu", "dc13.utdallas.edu"};
-    private ArrayList<QuorumListener> clients = new ArrayList<>();
-    private ExecutorService pool = Executors.newFixedThreadPool(500);
+    //private ArrayList<QuorumListener> clients = new ArrayList<>();
+    private ExecutorService pool = Executors.newCachedThreadPool();
+
 	private String pathName;
 	private ArrayList<Message> queue = new ArrayList<>();
     boolean token = true;
@@ -106,9 +107,9 @@ public class Quorum {
 
         try {
             socket = serverSocket.accept();
-            QuorumListener clientThread = new QuorumListener(socket,this);
-            clients.add(clientThread);
-            pool.execute((clientThread));
+            //QuorumListener clientThread = new QuorumListener(socket,this);
+            //clients.add(clientThread);
+            pool.execute(new QuorumListener(socket,this));
 
 
 
@@ -117,6 +118,7 @@ public class Quorum {
         } catch (IOException e) {
             e.printStackTrace();
         }finally{
+
             //socket close in handler
         }
     }
