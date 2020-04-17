@@ -6,14 +6,11 @@
   </ul>
 </p>
 <pre>
-- Java based Document Distributed System
--	Implemented Java Socket (TCP/IP) for Maekawa-Algorithm
-
 dc01~dc09 are 9 different machines
 
-start quorum0~quorum6 in dc01~dc07
+start quorum0-quorum6 in dc01-dc07
 start server0 in dc08
-start client0~client4 in dc09~dc013
+start client0-client4 in dc09-dc013
 
 each client will enter critical section(server0) 20 times
 each times client will send the request to quorums for token
